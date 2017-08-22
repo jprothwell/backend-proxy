@@ -1,4 +1,9 @@
-var http = require('http');
+var http = require('http')
+var url = require('url')
+
+var server = http.createServer()
+
+const PORT = 3000
 
 var params = process.argv
 var destUrl = ''
@@ -15,3 +20,17 @@ params.forEach(function (val, index, array) {
       readOnly = true
   }
 })
+
+var urlParsed = url.parse(destUrl)
+
+http.get({
+  host: 'localhost',
+  port: PORT,
+  path: urlParsed.path,
+}, function(res) {
+  console.log('GET request')
+}).on('error', function(err) {
+  console.log(err)
+}).end()
+
+server.listen(PORT)
