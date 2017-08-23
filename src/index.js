@@ -20,12 +20,20 @@ params.forEach(function (val, index, array) {
   }
 })
 
-var urlParsed = url.parse(destUrl)
-
 const server = http.createServer(function(req, res) {
   if (req.method == 'GET') {
-    request(destUrl + req.url, function(err, res, body) {
-      console.log(body)
-    })
+    res.setHeader('Content-Type', 'application/json');
+    res.write(JSON.stringify(proxyRequest(destUrl, req)))
+    res.end()
   }
 }).listen(PORT)
+
+function proxyRequest(dest, req) {
+  return request(dest.replace(/\/$/, "") + req.url, function(err, res, body) {
+    if (err) {
+      return err
+    } else {
+      return body
+    }
+  })
+}
