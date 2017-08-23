@@ -25,8 +25,8 @@ const server = http.createServer(function(req, res) {
   if (req.method == 'GET') {
     proxyRequest(destUrl, req, function(err, body) {
       if (!err) {
-        res.setHeader('Content-Type', 'application/json');
-        res.write(JSON.stringify(body))
+        res.setHeader('Content-Type', 'application/json')
+        res.write(JSON.stringify(body), null, 4)
         res.end()
       }
     })
