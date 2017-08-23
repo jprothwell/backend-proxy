@@ -12,10 +12,13 @@ var readOnly = false
 // Parse CLI parameters
 params.forEach(function (val, index, array) {
   switch (val) {
+    // URL to proxy to
     case '--url':
       destUrl = params[index + 1]
+    // Token for request
     case '--token':
       token = params[index + 1]
+    // Read only flag
     case '--read-only':
       readOnly = true
   }
@@ -26,7 +29,7 @@ const server = http.createServer(function(req, res) {
     proxyRequest(destUrl, req, function(err, body) {
       if (!err) {
         res.setHeader('Content-Type', 'application/json')
-        res.write(JSON.stringify(body), null, 4)
+        res.write(body)
         res.end()
       }
     })
