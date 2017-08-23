@@ -9,6 +9,7 @@ var destUrl = ''
 var token = ''
 var readOnly = false
 
+// Parse CLI parameters
 params.forEach(function (val, index, array) {
   switch (val) {
     case '--url':
@@ -22,18 +23,18 @@ params.forEach(function (val, index, array) {
 
 const server = http.createServer(function(req, res) {
   if (req.method == 'GET') {
-    res.setHeader('Content-Type', 'application/json');
-    res.write(JSON.stringify(proxyRequest(destUrl, req)))
-    res.end()
+    proxyRequest(destUrl, req, function(err, body) {
+      if (!err) {
+        res.setHeader('Content-Type', 'application/json');
+        res.write(JSON.stringify(body))
+        res.end()
+      }
+    })
   }
 }).listen(PORT)
 
-function proxyRequest(dest, req) {
+function proxyRequest(dest, req, callback) {
   return request(dest.replace(/\/$/, "") + req.url, function(err, res, body) {
-    if (err) {
-      return err
-    } else {
-      return body
-    }
+    callback(err, body)
   })
 }
