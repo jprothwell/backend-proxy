@@ -4,7 +4,8 @@
   "description": "A command line utility that proxies a backend API and caches the GET requests.",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "pretty": "prettier --single-quote --write '{src,__{tests,mocks}__}/**/*.js'"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
     "request": "^2.81.0"
   },
   "devDependencies": {
-    "jest": "^20.0.4"
+    "jest": "^20.0.4",
+    "prettier": "^1.5.3"
   }
 }
