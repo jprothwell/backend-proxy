@@ -35,3 +35,6 @@ params.forEach(function(val, index, array) {
 const server = http
   .createServer(createHandler({ proxyUrl, token, readOnly }))
   .listen(PORT);
+
+console.log("Proxy listening on " + proxyUrl)
+console.log("Proxified URL http://localhost" + PORT)
