@@ -1,6 +1,6 @@
-var http = require('http')
-var url = require('url')
-var request = require('request')
+const http = require('http')
+const url = require('url')
+const request = require('request')
 
 const PORT = 3000
 
