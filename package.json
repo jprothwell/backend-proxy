@@ -4,7 +4,7 @@
   "description": "A command line utility that proxies a backend API and caches the GET requests.",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "homepage": "https://github.com/murcul/backend-proxy#readme",
   "dependencies": {
     "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "jest": "^20.0.4"
   }
 }
