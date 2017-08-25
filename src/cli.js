@@ -27,7 +27,11 @@ params.forEach(function(val, index, array) {
       readOnly = true;
       break;
     case '--help':
-      console.log('');
+      console.log('usage: node cli [--url] [--token] [--read-only]')
+      console.log('url:         The URL to proxy to')
+      console.log('token:       Token to use for GET requests')
+      console.log('read-only:   Read only API calls')
+      process.exit(1)
       break;
   }
 });
@@ -36,5 +40,5 @@ const server = http
   .createServer(createHandler({ proxyUrl, token, readOnly }))
   .listen(PORT);
 
-console.log("Proxy listening on " + proxyUrl)
-console.log("Proxified URL http://localhost" + PORT)
+console.log("Proxying to " + proxyUrl)
+console.log("Proxified URL http://localhost:" + PORT)
