@@ -1,9 +1,9 @@
 const request = require('request')
 
-module.exports = function createHandler({ proxyUrl, readOnly }) {
+module.exports = function createHandler({ proxyUrl, token, readOnly }) {
   return (req, res) => {
     if (!readOnly || (readOnly && req.method == 'GET')) {
-      request(proxyUrl.replace(/\/$/, '') + req.url, function(
+      request(createUrl(proxyUrl, req, token), function(
         err,
         response,
         body
@@ -14,6 +14,14 @@ module.exports = function createHandler({ proxyUrl, readOnly }) {
     } else {
       inReadOnlyMode(res)
     }
+  }
+}
+
+function createUrl(url, req, token) {
+  if (token == '') {
+    return url.replace(/\/$/, '') + req.url
+  } else {
+    return url.replace(/\/$/, '') + req.url + '?token=' + token
   }
 }
 
