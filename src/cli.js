@@ -9,6 +9,7 @@ const PORT = 3000
 var params = process.argv
 var proxyUrl = ''
 var token = ''
+var tokenName = 'token'
 var readOnly = false
 
 // Parse CLI parameters
@@ -21,6 +22,9 @@ params.forEach(function(val, index, array) {
     // Token for request
     case '--token':
       token = params[index + 1]
+      break
+    case '--token-name':
+      tokenName = params[index + 1]
       break
     // Read only flag
     case '--read-only':
@@ -37,7 +41,7 @@ params.forEach(function(val, index, array) {
 })
 
 const server = http
-  .createServer(createHandler({ proxyUrl, token, readOnly }))
+  .createServer(createHandler({ proxyUrl, token, tokenName, readOnly }))
   .listen(PORT)
 
 console.log('Proxying to ' + proxyUrl)
