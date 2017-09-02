@@ -42,7 +42,7 @@ describe('Backend proxy lib', () => {
     })
     it('Failed post', async () => {
       const response = await request(server).post('/login', { json: { email: "peter@klaven", password: "cityslicka" } })
-      console.log(response.body)
+
       expect(response.body.token).toEqual('QpwL5tke4Pnpja7X')
     })
   })
