@@ -3,8 +3,10 @@ const request = require('request')
 module.exports = function createHandler({ proxyUrl, token, tokenName, readOnly }) {
   return (req, res) => {
     if (!readOnly || (readOnly && req.method == 'GET')) {
-      console.log(createUrl(proxyUrl, req, token, tokenName))
-      request(createUrl(proxyUrl, req, token, tokenName), function(
+      request({
+        url: createUrl(proxyUrl, req, token, tokenName),
+        method: req.method,
+      }, function(
         err,
         response,
         body
