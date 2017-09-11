@@ -19,7 +19,7 @@ describe('Backend proxy lib', () => {
       expect(response.body.data.id).toEqual(2)
     })
   })
-  
+
   describe('Proxy with read only', () => {
     let server
     beforeEach(() => {
@@ -41,13 +41,10 @@ describe('Backend proxy lib', () => {
       )
     })
     it('Successful login attempt', async () => {
-      let options = {
-        url: '/login',
-        body: { "email": "peter@klaven", "password": "cityslicka" },
-        json: true,
-      }
-      const response = await request(server).post(options)
-      console.log(response)
+       const response = await request(server).post('/login')
+        .set('Content-Type', 'application/json')
+        .send(`{ "email": "peter@klaven", "password": "cityslicka" }`);
+      console.log(response.body)
       expect(response.body.token).toEqual('QpwL5tke4Pnpja7X')
     })
   })
