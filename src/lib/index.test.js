@@ -40,9 +40,14 @@ describe('Backend proxy lib', () => {
         createHandler({ proxyUrl: 'https://reqres.in/api/' })
       )
     })
-    it('Failed post', async () => {
-      const response = await request(server).post('/login', { json: { email: "peter@klaven", password: "cityslicka" } })
-
+    it('Successful login attempt', async () => {
+      let options = {
+        url: '/login',
+        body: { "email": "peter@klaven", "password": "cityslicka" },
+        json: true,
+      }
+      const response = await request(server).post(options)
+      console.log(response)
       expect(response.body.token).toEqual('QpwL5tke4Pnpja7X')
     })
   })
