@@ -13,7 +13,7 @@ Backend proxy is a tool to route your REST API through a proxy
 ## Options
 
 | Option        | Input         | Default  | Required |
-| ------------- |-------------:| :-----:| -----:|
+| :-------------: |:-------------:| :-----:| -----:|
 | --url | Url to proxy to | N/A | *|
 | --token | Token to use for requests | N/A | |
 | --read-only | Only allow GET requests | false |  |
