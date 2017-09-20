@@ -2,6 +2,10 @@
 
 Backend proxy is a tool to route your REST API through a proxy
 
+## Install
+
+`$ npm install backend-proxy`
+
 ## Usage
 
 `$ node src/cli --url PROXY_URL --token TOKEN --read-only`
