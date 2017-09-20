@@ -11,7 +11,7 @@ $ npm i -g backend-proxy
 ## Usage
 
 ```bash
-$ node src/cli --url PROXY_URL --token TOKEN --read-only
+$ backend-proxy --url PROXY_URL --token TOKEN --read-only
 ```
 
 ## Options
@@ -25,7 +25,7 @@ $ node src/cli --url PROXY_URL --token TOKEN --read-only
 ## Example
 
 ```bash
-$ node src/cli --url https://reqres.in/api
+$ backend-proxy --url https://reqres.in/api
 ```
 Then
 ```bash
