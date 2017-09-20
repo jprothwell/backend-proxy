@@ -1,8 +1,8 @@
 {
   "name": "backend-proxy",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A command line utility that proxies a backend API and caches the GET requests.",
-  "main": "src/index.js",
+  "main": "src/cli.js",
   "scripts": {
     "test": "jest",
     "pretty": "prettier --single-quote --write --no-semi '{src,__{tests,mocks}__}/**/*.js'"
