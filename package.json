@@ -3,6 +3,9 @@
   "version": "0.0.6",
   "description": "A command line utility that proxies a backend API and caches the GET requests.",
   "main": "src/cli.js",
+  "engines": {
+    "node": ">= 8.0.0"
+  },
   "scripts": {
     "test": "jest",
     "pretty": "prettier --single-quote --write --no-semi '{src,__{tests,mocks}__}/**/*.js'"
