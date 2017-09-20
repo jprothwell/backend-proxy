@@ -1,11 +1,14 @@
 const request = require('request')
 
-module.exports = function createHandler({ proxyUrl, token, tokenName, readOnly }) {
+module.exports = function createHandler({
+  proxyUrl,
+  token,
+  tokenName,
+  readOnly
+}) {
   return (req, res) => {
     if (!readOnly || (readOnly && req.method == 'GET')) {
-      req.pipe(
-        request(createUrl(proxyUrl, req, token, tokenName)),
-      ).pipe(res);
+      req.pipe(request(createUrl(proxyUrl, req, token, tokenName))).pipe(res)
     } else {
       inReadOnlyMode(res)
     }

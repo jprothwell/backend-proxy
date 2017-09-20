@@ -41,15 +41,17 @@ describe('Backend proxy lib', () => {
       )
     })
     it('Successful login attempt', async () => {
-      const response = await request(server).post('/login')
-      .set('Content-Type', 'application/json')
-      .send(`{ "email": "peter@klaven", "password": "cityslicka" }`);
+      const response = await request(server)
+        .post('/login')
+        .set('Content-Type', 'application/json')
+        .send(`{ "email": "peter@klaven", "password": "cityslicka" }`)
       expect(response.body.token).toEqual('QpwL5tke4Pnpja7X')
     })
     it('Unsuccessful register attempt', async () => {
-      const response = await request(server).post('/register')
-      .set('Content-Type', 'application/json')
-      .send(`{ "email": "peter@klaven" }`);
+      const response = await request(server)
+        .post('/register')
+        .set('Content-Type', 'application/json')
+        .send(`{ "email": "peter@klaven" }`)
       expect(response.body.error).toEqual('Missing password')
     })
   })
