@@ -1,7 +1,7 @@
 {
   "name": "backend-proxy",
   "version": "0.0.6",
-  "description": "A command line utility that proxies a backend API and caches the GET requests.",
+  "description": "A command line utility that proxies a backend API",
   "main": "src/cli.js",
   "engines": {
     "node": ">= 8.0.0"
