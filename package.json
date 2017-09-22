@@ -27,8 +27,8 @@
     "jest": "^20.0.4",
     "prettier": "^1.5.3",
     "supertest": "^3.0.0"
-  }
+  },
   "bin": {
     "backend-proxy": "./src/cli.js"
-  },
+  }
 }
