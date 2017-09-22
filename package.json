@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/murcul/backend-proxy#readme",
   "dependencies": {
+    "jest-cli": "^21.1.0",
     "request": "^2.81.0"
   },
   "devDependencies": {
