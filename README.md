@@ -38,7 +38,8 @@ GET https://reqres.in/api/users/2
 ```
 
 [Testing API used](https://github.com/benhowdle89/reqres)
-[npm](https://www.npmjs.com/package/backend-proxy)
+
+[View this on npm](https://www.npmjs.com/package/backend-proxy)
 
 
 Made with ❤ by [Rikin Katyal](https://github.com/sirvar)
