@@ -1,5 +1,5 @@
 # backend-proxy
-[![CircleCI](https://circleci.com/gh/murcul/backend-proxy.svg?style=svg)](https://circleci.com/gh/murcul/backend-proxy)
+[![CircleCI](https://circleci.com/gh/murcul/backend-proxy.svg?style=shield)](https://circleci.com/gh/murcul/backend-proxy)
 
 Backend proxy is a tool to route your REST API through a proxy
 
