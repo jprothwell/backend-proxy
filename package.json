@@ -30,5 +30,5 @@
   },
   "bin": {
     "backend-proxy": "./src/cli.js"
-  }
+  },
 }
