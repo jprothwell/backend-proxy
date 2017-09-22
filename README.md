@@ -1,5 +1,5 @@
 # backend-proxy
-[![CircleCI](https://circleci.com/gh/murcul/backend-proxy.svg?style=shield)](https://circleci.com/gh/murcul/backend-proxy)
+[![CircleCI](https://circleci.com/gh/murcul/backend-proxy.svg?style=svg)](https://circleci.com/gh/murcul/backend-proxy)
 
 Backend proxy is a tool to route your REST API through a proxy
 
@@ -38,5 +38,7 @@ GET https://reqres.in/api/users/2
 ```
 
 [Testing API used](https://github.com/benhowdle89/reqres)
+[npm](https://www.npmjs.com/package/backend-proxy)
+
 
 Made with ❤ by [Rikin Katyal](https://github.com/sirvar)
