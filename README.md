@@ -12,7 +12,7 @@ $ npm i -g backend-proxy
 ## Usage
 
 ```bash
-$ backend-proxy --url PROXY_URL --token-name --token TOKEN --use-headers --read-only
+$ backend-proxy --url PROXY_URL --token-name --token TOKEN --use-headers --port 3000 --read-only
 ```
 
 ## Options
