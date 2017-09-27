@@ -15,10 +15,11 @@ var port = 3000
 
 const printUsage = () => {
   console.log(
-    'usage: node cli [--url] [--use-headers] [--token-name] [--token] [--read-only]'
+    'usage: node cli [--url] [--port] [--use-headers] [--token-name] [--token] [--read-only]'
   )
   console.log('url:         The URL to proxy to')
   console.log('token:       Token to use for all requests')
+  console.log('port:        Port to serve the proxy requests on')
   console.log(
     'token-name:  Name of the token query parameter / header name. (Default = token)'
   )
