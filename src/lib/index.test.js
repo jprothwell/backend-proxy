@@ -2,109 +2,119 @@ const createHandler = require('./index')
 const request = require('supertest')
 const http = require('http')
 
-const closeTestServer = server => new Promise((resolve, reject) => {
-  server.close();
-  server.on('close', err => {
-    if (err) return reject(err);
-    return resolve();
-  });
-});
+const closeTestServer = server =>
+  new Promise((resolve, reject) => {
+    server.close()
+    server.on('close', err => {
+      if (err) return reject(err)
+      return resolve()
+    })
+  })
 
-const createTestServer = handler => new Promise((resolve, reject) => {
-  const server = http.createServer(handler);
-  server.listen(0, err => {
-    if (err) return reject(err);
-    return resolve(server);
-  });
-});
+const createTestServer = handler =>
+  new Promise((resolve, reject) => {
+    const server = http.createServer(handler)
+    server.listen(0, err => {
+      if (err) return reject(err)
+      return resolve(server)
+    })
+  })
 
 const jsonHandler = (req, res) => {
-  res.writeHead(200, {"Content-Type": "application/json"});
-  res.end(JSON.stringify({ data: { name: 'John', age: 23 } }));
-};
+  res.writeHead(200, { 'Content-Type': 'application/json' })
+  res.end(JSON.stringify({ data: { name: 'John', age: 23 } }))
+}
 
 const infoHandler = (req, res) => {
-  res.writeHead(200, {"Content-Type": "application/json"});
-  res.end(JSON.stringify({ url: req.url, headers: req.headers, method: req.method }));
-};
+  res.writeHead(200, { 'Content-Type': 'application/json' })
+  res.end(
+    JSON.stringify({ url: req.url, headers: req.headers, method: req.method })
+  )
+}
 
 const postHandler = (req, res) => {
   if (req.method !== 'POST') {
-    res.writeHead(500);
-    return res.end('Invalid request!');
-  } 
+    res.writeHead(500)
+    return res.end('Invalid request!')
+  }
 
-  let body = '';
-  res.writeHead(200, {"Content-Type": "application/json"});
-  req.on('data', data => (body += data));
+  let body = ''
+  res.writeHead(200, { 'Content-Type': 'application/json' })
+  req.on('data', data => (body += data))
   req.on('end', () => {
-    res.end(JSON.stringify({
-      body,
-    }));
-  });
-};
+    res.end(
+      JSON.stringify({
+        body
+      })
+    )
+  })
+}
 
 describe('Backend proxy lib', () => {
   describe('With JSON server', () => {
-    let testServer, proxyServer;
+    let testServer, proxyServer
     beforeAll(async () => {
-      testServer = await createTestServer(jsonHandler);
-    });
+      testServer = await createTestServer(jsonHandler)
+    })
 
     afterAll(async () => {
-      await closeTestServer(testServer);
+      await closeTestServer(testServer)
     })
 
     beforeEach(() => {
       proxyServer = http.createServer(
-        createHandler({ proxyUrl: `http://localhost:${testServer.address().port}` })
-      );
-    });
+        createHandler({
+          proxyUrl: `http://localhost:${testServer.address().port}`
+        })
+      )
+    })
 
     it('sends back data properly', async () => {
       const response = await request(proxyServer).get('/users?page=3')
       expect(response.body).toEqual({
-        data: { name: 'John', age: 23 },
-      });
-    });
-  });
+        data: { name: 'John', age: 23 }
+      })
+    })
+  })
 
   describe('When read only', () => {
     it('passes get request properly', async () => {
-      const testServer = await createTestServer(jsonHandler);
-      const proxyServer = http.createServer(createHandler({
-        proxyUrl: `http://localhost:${testServer.address().port}`,
-        readOnly: true,
-      }));
+      const testServer = await createTestServer(jsonHandler)
+      const proxyServer = http.createServer(
+        createHandler({
+          proxyUrl: `http://localhost:${testServer.address().port}`,
+          readOnly: true
+        })
+      )
 
       expect((await request(proxyServer).get('/users')).body).toEqual({
-        data: { name: 'John', age: 23 },
-      });
+        data: { name: 'John', age: 23 }
+      })
 
-      await closeTestServer(testServer);
-    });
+      await closeTestServer(testServer)
+    })
 
     it('blocks post, put & delete requests', async () => {
-      // Note: we use a dummy proxy url that fails to make sure proxy does not 
+      // Note: we use a dummy proxy url that fails to make sure proxy does not
       // make a request to that url when blocking readonly requests
       const proxyServer = http.createServer(
         createHandler({ proxyUrl: `http://random_url.co/api`, readOnly: true })
-      );
+      )
 
-      expect((await request(proxyServer).post('/users')).status).toBe(500);
-      expect((await request(proxyServer).put('/users')).status).toBe(500);
-      expect((await request(proxyServer).delete('/users')).status).toBe(500);
-    });
-  });
+      expect((await request(proxyServer).post('/users')).status).toBe(500)
+      expect((await request(proxyServer).put('/users')).status).toBe(500)
+      expect((await request(proxyServer).delete('/users')).status).toBe(500)
+    })
+  })
 
   describe('when given a specific token', () => {
-    let testServer, proxyServer;
+    let testServer, proxyServer
     beforeAll(async () => {
-      testServer = await createTestServer(infoHandler);
-    });
+      testServer = await createTestServer(infoHandler)
+    })
 
     afterAll(async () => {
-      await closeTestServer(testServer);
+      await closeTestServer(testServer)
     })
 
     beforeEach(() => {
@@ -114,14 +124,16 @@ describe('Backend proxy lib', () => {
           tokenName: 'testToken',
           token: '123'
         })
-      );
-    });
+      )
+    })
 
     it('generates the correct url with token', async () => {
-      expect((await request(proxyServer).get('/users?length=25')).body).toEqual(expect.objectContaining({
-        url: '/api/1/users?length=25&testToken=123'
-      }));
-    });
+      expect((await request(proxyServer).get('/users?length=25')).body).toEqual(
+        expect.objectContaining({
+          url: '/api/1/users?length=25&testToken=123'
+        })
+      )
+    })
 
     it('suppors http header tokens', async () => {
       const anotherProxyServer = http.createServer(
@@ -129,42 +141,44 @@ describe('Backend proxy lib', () => {
           proxyUrl: `http://localhost:${testServer.address().port}/api/1`,
           tokenName: 'test-token',
           token: '123',
-          useHeaders: true,
+          useHeaders: true
         })
-      );
+      )
 
-      const response = await request(anotherProxyServer).get('/users?length=25');
+      const response = await request(anotherProxyServer).get('/users?length=25')
       expect(response.body.headers['test-token']).toEqual('123')
-      expect(response.body.url).toEqual('/api/1/users?length=25');
-    });
-  });
+      expect(response.body.url).toEqual('/api/1/users?length=25')
+    })
+  })
 
   describe('when posting things', () => {
-    let testServer, proxyServer;
+    let testServer, proxyServer
     beforeAll(async () => {
-      testServer = await createTestServer(postHandler);
-    });
+      testServer = await createTestServer(postHandler)
+    })
 
     afterAll(async () => {
-      await closeTestServer(testServer);
+      await closeTestServer(testServer)
     })
 
     beforeEach(() => {
       proxyServer = http.createServer(
-        createHandler({ proxyUrl: `http://localhost:${testServer.address().port}/api/1` })
-      );
-    });
+        createHandler({
+          proxyUrl: `http://localhost:${testServer.address().port}/api/1`
+        })
+      )
+    })
 
     it('posts data properly', async () => {
-      const postBody = `{ "email": "peter@klaven", "password": "cityslicka" }`;
-      const response = await request(proxyServer).post('/create')
+      const postBody = `{ "email": "peter@klaven", "password": "cityslicka" }`
+      const response = await request(proxyServer)
+        .post('/create')
         .set('Content-Type', 'application/json')
-        .send(postBody);
+        .send(postBody)
 
-      expect(response.body).toEqual({ body: postBody });
-    });
+      expect(response.body).toEqual({ body: postBody })
+    })
   })
-
 
   describe('Test proxy', () => {
     let server

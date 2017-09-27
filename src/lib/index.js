@@ -5,21 +5,23 @@ module.exports = function createHandler({
   token,
   tokenName,
   readOnly,
-  useHeaders,
+  useHeaders
 }) {
   return (req, res) => {
-    const headers = {};
+    const headers = {}
     if (useHeaders) {
-      headers[tokenName] = token;
+      headers[tokenName] = token
     }
 
     if (!readOnly || (readOnly && req.method == 'GET')) {
       const proxyReq = request({
-        url: useHeaders ? createUrl(proxyUrl, req) : createUrl(proxyUrl, req, token, tokenName),
-        headers,
-      });
-      req.pipe(proxyReq);
-      proxyReq.pipe(res);
+        url: useHeaders
+          ? createUrl(proxyUrl, req)
+          : createUrl(proxyUrl, req, token, tokenName),
+        headers
+      })
+      req.pipe(proxyReq)
+      proxyReq.pipe(res)
     } else {
       inReadOnlyMode(res)
     }
