@@ -12,16 +12,18 @@ $ npm i -g backend-proxy
 ## Usage
 
 ```bash
-$ backend-proxy --url PROXY_URL --token TOKEN --read-only
+$ backend-proxy --url PROXY_URL --token-name --token TOKEN --use-headers --read-only
 ```
 
 ## Options
 
 | Option        | Input         | Default  | Required |
 | :-------------: |:-------------:| :-----:| :-----:|
-| --url | Url to proxy to | N/A | *|
-| --token | Token to use for requests | N/A | |
-| --read-only | Only allow GET requests | false |  |
+| --url | Url to proxy to | N/A | Yes |
+| --token-name | Name of the token query parameter / header name used to pass token | token | No |
+| --token | Token to use for requests | N/A | No |
+| --use-headers | Pass token as a http header instead of a url query string | false | No |
+| --read-only | Only allow GET requests | false | No |
 
 ## Example
 
@@ -36,8 +38,6 @@ proxies to
 ```bash
 GET https://reqres.in/api/users/2
 ```
-
-[Testing API used](https://github.com/benhowdle89/reqres)
 
 [View this on npm](https://www.npmjs.com/package/backend-proxy)
 
