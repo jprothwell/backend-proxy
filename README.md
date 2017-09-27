@@ -19,12 +19,12 @@ $ backend-proxy --url PROXY_URL --token-name --token TOKEN --use-headers --port 
 
 | Option        | Input         | Default  | Required |
 | :-------------: |:-------------:| :-----:| :-----:|
-| --port | Port on which proxy will serve requests | 3000 | No |
-| --url | Url to proxy to | N/A | Yes |
-| --token-name | Name of the token query parameter / header name used to pass token | token | No |
-| --token | Token to use for requests | N/A | No |
-| --use-headers | Pass token as a http header instead of a url query string | false | No |
-| --read-only | Only allow GET requests | false | No |
+| --port | Port on which proxy will serve requests | 3000 |  |
+| --url | Url to proxy to | N/A | * |
+| --token-name | Name of the token query parameter / header name used to pass token | token |  |
+| --token | Token to use for requests | N/A |  |
+| --use-headers | Pass token as a http header instead of a url query string | false |  |
+| --read-only | Only allow GET requests | false |  |
 
 ## Example
 
