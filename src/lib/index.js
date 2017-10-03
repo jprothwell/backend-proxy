@@ -26,21 +26,25 @@ module.exports = function createHandler({
 }) {
   return (req, res) => {
     // filter out unwanted headers
-    const headers = Object.keys(req.headers)
-      .reduce((obj, key) => {
-        if (/(x-|host|if-|origin|access-|accept|connection|referer|user-)/.exec(key)) {
-          return obj;
-        }
+    const headers = Object.keys(req.headers).reduce((obj, key) => {
+      if (
+        /(x-|host|if-|origin|access-|accept|connection|referer|user-)/.exec(key)
+      ) {
+        return obj
+      }
 
-        obj[key] = req.headers[key];
-        return obj;
-      }, {});
+      obj[key] = req.headers[key]
+      return obj
+    }, {})
 
     if (useHeaders) {
       headers[tokenName] = token
     }
 
-    if (!readOnly || (readOnly && ['GET', 'OPTIONS'].indexOf(req.method) !== -1)) {
+    if (
+      !readOnly ||
+      (readOnly && ['GET', 'OPTIONS'].indexOf(req.method) !== -1)
+    ) {
       const url = useHeaders
         ? createUrl(proxyUrl, req)
         : createUrl(proxyUrl, req, token, tokenName)
@@ -52,16 +56,17 @@ module.exports = function createHandler({
           headers
         },
         proxyRes => {
-          const responseHeaders = proxyRes.headers;
+          const responseHeaders = proxyRes.headers
 
           // enable CORS
-          const origin = req.headers['origin'], requestedMethods = req.headers['access-control-request-method']
-          responseHeaders['Access-Control-Allow-Credentials'] = 'true';
+          const origin = req.headers['origin'],
+            requestedMethods = req.headers['access-control-request-method']
+          responseHeaders['Access-Control-Allow-Credentials'] = 'true'
           if (origin) {
-            responseHeaders['Access-Control-Allow-Origin'] = origin;
+            responseHeaders['Access-Control-Allow-Origin'] = origin
           }
           if (requestedMethods) {
-            responseHeaders['Access-Control-Allow-Methods'] = requestedMethods;
+            responseHeaders['Access-Control-Allow-Methods'] = requestedMethods
           }
 
           res.writeHead(proxyRes.statusCode, responseHeaders)

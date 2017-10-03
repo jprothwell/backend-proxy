@@ -71,17 +71,19 @@ describe('Backend proxy lib', () => {
 
     it('respects CORS', async () => {
       const response = await request(proxyServer)
-      .get('/users?length=25')
-      .set('access-control-request-method', 'GET')
-      .set('origin', 'http://localhost:8080')
-      .set('access-control-request-method', 'GET');
+        .get('/users?length=25')
+        .set('access-control-request-method', 'GET')
+        .set('origin', 'http://localhost:8080')
+        .set('access-control-request-method', 'GET')
 
-      expect(response.header).toEqual(expect.objectContaining({
-        'access-control-allow-credentials': 'true',
-        'access-control-allow-methods': 'GET',
-        'access-control-allow-origin': 'http://localhost:8080',
-      }));
-    });
+      expect(response.header).toEqual(
+        expect.objectContaining({
+          'access-control-allow-credentials': 'true',
+          'access-control-allow-methods': 'GET',
+          'access-control-allow-origin': 'http://localhost:8080'
+        })
+      )
+    })
 
     it('sends back data properly', async () => {
       const response = await request(proxyServer).get('/users?page=3')
