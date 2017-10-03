@@ -25,12 +25,22 @@ module.exports = function createHandler({
   useHeaders
 }) {
   return (req, res) => {
-    const headers = {}
+    // filter out unwanted headers
+    const headers = Object.keys(req.headers)
+      .reduce((obj, key) => {
+        if (/(x-|host|if-|origin|access-|accept|connection|referer|user-)/.exec(key)) {
+          return obj;
+        }
+
+        obj[key] = req.headers[key];
+        return obj;
+      }, {});
+
     if (useHeaders) {
       headers[tokenName] = token
     }
 
-    if (!readOnly || (readOnly && req.method == 'GET')) {
+    if (!readOnly || (readOnly && ['GET', 'OPTIONS'].indexOf(req.method) !== -1)) {
       const url = useHeaders
         ? createUrl(proxyUrl, req)
         : createUrl(proxyUrl, req, token, tokenName)
@@ -42,7 +52,19 @@ module.exports = function createHandler({
           headers
         },
         proxyRes => {
-          res.writeHead(proxyRes.statusCode, proxyRes.headers)
+          const responseHeaders = proxyRes.headers;
+
+          // enable CORS
+          const origin = req.headers['origin'], requestedMethods = req.headers['access-control-request-method']
+          responseHeaders['Access-Control-Allow-Credentials'] = 'true';
+          if (origin) {
+            responseHeaders['Access-Control-Allow-Origin'] = origin;
+          }
+          if (requestedMethods) {
+            responseHeaders['Access-Control-Allow-Methods'] = requestedMethods;
+          }
+
+          res.writeHead(proxyRes.statusCode, responseHeaders)
           proxyRes.pipe(res)
         }
       ).on('error', err => {
