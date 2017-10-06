@@ -60,13 +60,17 @@ module.exports = function createHandler({
 
           // enable CORS
           const origin = req.headers['origin'],
-            requestedMethods = req.headers['access-control-request-method']
+            requestedMethods = req.headers['access-control-request-method'],
+            requestHeaders = req.headers['access-control-request-headers']
           responseHeaders['Access-Control-Allow-Credentials'] = 'true'
           if (origin) {
             responseHeaders['Access-Control-Allow-Origin'] = origin
           }
           if (requestedMethods) {
             responseHeaders['Access-Control-Allow-Methods'] = requestedMethods
+          }
+          if (requestHeaders) {
+            responseHeaders['Access-Control-Allow-Headers'] = requestHeaders
           }
 
           res.writeHead(proxyRes.statusCode, responseHeaders)
