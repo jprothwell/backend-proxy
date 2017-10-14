@@ -4,7 +4,7 @@
   "description": "A command line utility that proxies a backend API",
   "main": "src/cli.js",
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 8.6.0"
   },
   "scripts": {
     "test": "jest",
@@ -20,11 +20,9 @@
     "url": "https://github.com/murcul/backend-proxy/issues"
   },
   "homepage": "https://github.com/murcul/backend-proxy#readme",
-  "dependencies": {
-    "jest-cli": "^21.1.0",
-    "request": "^2.81.0"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "jest-cli": "^21.1.0",
     "jest": "^20.0.4",
     "prettier": "^1.5.3",
     "supertest": "^3.0.0"
