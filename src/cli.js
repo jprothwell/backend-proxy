@@ -2,10 +2,10 @@
 const http = require('http')
 const url = require('url')
 const request = require('request')
+var program = require('commander');
 
 const createHandler = require('./lib/index')
 
-var params = process.argv
 var proxyUrl = ''
 var token = ''
 var tokenName = 'token'
@@ -13,57 +13,42 @@ var readOnly = false
 var useHeaders = false
 var port = 3000
 
-const printUsage = () => {
-  console.log(
-    'usage: node cli [--url] [--port] [--use-headers] [--token-name] [--token] [--read-only]'
-  )
-  console.log('url:         The URL to proxy to')
-  console.log('token:       Token to use for all requests')
-  console.log('port:        Port to serve the proxy requests on')
-  console.log(
-    'token-name:  Name of the token query parameter / header name. (Default = token)'
-  )
-  console.log(
-    'use-headers: Send token as a http header instead of url query (Default = false)'
-  )
-  console.log('read-only:   Read only API calls. (Default = false)')
+function string(value) {
+  return value.toString()
 }
 
-// Parse CLI parameters
-params.forEach(function(val, index, array) {
-  switch (val) {
-    // URL to proxy to
-    case '--url':
-      proxyUrl = params[index + 1]
-      break
-    case '--port':
-      port = params[index + 1]
-      break
-    // Token for request
-    case '--token':
-      token = params[index + 1]
-      break
-    case '--token-name':
-      tokenName = params[index + 1]
-      break
-    case '--use-headers':
-      useHeaders = true
-      break
-    // Read only flag
-    case '--read-only':
-      readOnly = true
-      break
-    case '--help':
-      printUsage()
-      process.exit(1)
-      break
-  }
-})
+program
+  .version('0.1.0')
+  .option('-u, --url <s>', 'The URL to proxy to', string)
+  .option('-p, --port <n>', 'Port to serve the proxy requests on', parseInt)
+  .option('-h, --use-headers', 'Send token as a http header instead of url query (Default = false)')
+  .option('-n, --token-name <s>', 'Name of the token query parameter / header name. (Default = token)', string)
+  .option('-t, --token <s>', 'Token to use for all requests', string)
+  .option('-r, --read-only', 'Read only API calls. (Default = false)')
+  .parse(process.argv)
 
-if (!proxyUrl || !proxyUrl.length) {
+// Parse CLI parameters
+if (!program.url || !program.url.length) {
   console.log('No url was passed to proxy from')
-  printUsage()
+  program.help()
   process.exit(1)
+} else {
+  proxyUrl = program.url  
+}
+if (program.port) {
+  port = program.port  
+}
+if (program.useHeaders) {
+  useHeaders = program.useHeaders  
+}
+if (program.tokenName) {
+  tokenName = program.tokenName  
+}
+if (program.token) {
+  token = program.token  
+}
+if (program.readOnly) {
+  readOnly = program.readOnly  
 }
 
 const server = http
