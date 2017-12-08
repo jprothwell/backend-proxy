@@ -21,10 +21,15 @@ $ backend-proxy --url PROXY_URL --token-name --token TOKEN --use-headers --port 
 | :-------------: |:-------------:| :-----:| :-----:|
 | --port | Port on which proxy will serve requests | 3000 |  |
 | --url | Url to proxy to | N/A | * |
+| --secure | Listen over https instead of http. Will use a test self signed certificate | false |  |
 | --token-name | Name of the token query parameter / header name used to pass token | token |  |
 | --token | Token to use for requests | N/A |  |
 | --use-headers | Pass token as a http header instead of a url query string | false |  |
 | --read-only | Only allow GET requests | false |  |
+| --rewrite | Transforms paths from when proxying request | * |  |
+| --debug | Print extra information for debugging | false |  |
+| --secure | Print extra information for debugging | false |  |
+
 
 ## Example
 
@@ -38,6 +43,22 @@ GET http://localhost:3000/users/2
 proxies to
 ```bash
 GET https://reqres.in/api/users/2
+```
+
+### Path Rewrites
+`--rewrite` option can be used multiple times to transform many paths like so:
+```bash
+$ backend-proxy --url https://reqres.in/api --rewrite "/users -> /clients" --rewrite "/customers -> /clients"
+```
+Then
+```bash
+GET http://localhost:3000/users/2
+GET http://localhost:3000/customers/4
+```
+proxies to
+```bash
+GET https://reqres.in/api/clients/2
+GET https://reqres.in/api/clients/4
 ```
 
 ## License

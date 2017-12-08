@@ -4,11 +4,12 @@ const { parse: parseUrl } = require('url')
 
 const request = function(url, options, cb) {
   const parsedUrl = parseUrl(url)
-  const opts = Object.assign(options, {
+  const opts = {
+    ...options,
     port: parsedUrl.port,
     hostname: parsedUrl.hostname,
     path: parsedUrl.path
-  })
+  }
 
   if (parsedUrl.protocol === 'https:') {
     return https.request(opts, cb)
@@ -22,7 +23,9 @@ module.exports = function createHandler({
   token,
   tokenName,
   readOnly,
-  useHeaders
+  useHeaders,
+  rewrites = [],
+  debug
 }) {
   return (req, res) => {
     // filter out unwanted headers
@@ -41,13 +44,22 @@ module.exports = function createHandler({
       headers[tokenName] = token
     }
 
+    const originPath = rewrites.reduce(
+      (path, { source, destination }) => path.replace(source, destination),
+      req.url
+    )
+
     if (
       !readOnly ||
       (readOnly && ['GET', 'OPTIONS'].indexOf(req.method) !== -1)
     ) {
       const url = useHeaders
-        ? createUrl(proxyUrl, req)
-        : createUrl(proxyUrl, req, token, tokenName)
+        ? createUrl(proxyUrl, originPath)
+        : createUrl(proxyUrl, originPath, token, tokenName)
+
+      if (debug) {
+        console.log(`Proxifying ${originPath} => ${url}`)
+      }
 
       const proxyReq = request(
         url,
@@ -87,13 +99,17 @@ module.exports = function createHandler({
   }
 }
 
-function createUrl(url, req, token, tokenName) {
+function createUrl(proxyUrl, originPath, token, tokenName) {
   if (!token) {
-    return url.replace(/\/$/, '') + req.url
-  } else if (req.url.includes('?')) {
-    return url.replace(/\/$/, '') + req.url + '&' + tokenName + '=' + token
+    return proxyUrl.replace(/\/$/, '') + originPath
+  } else if (originPath.includes('?')) {
+    return (
+      proxyUrl.replace(/\/$/, '') + originPath + '&' + tokenName + '=' + token
+    )
   } else {
-    return url.replace(/\/$/, '') + req.url + '?' + tokenName + '=' + token
+    return (
+      proxyUrl.replace(/\/$/, '') + originPath + '?' + tokenName + '=' + token
+    )
   }
 }
 
