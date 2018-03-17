@@ -24,7 +24,7 @@ function parseRewrite(value, list) {
 }
 
 program
-  .version('0.0.9')
+  .version('0.0.11')
   .option('-u, --url <s>', 'The URL to proxy to', string)
   .option('-d, --debug', 'Log info while proxifying requests (Default = false)')
   .option(
