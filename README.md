@@ -30,6 +30,12 @@ $ backend-proxy --url PROXY_URL --token-name --token TOKEN --use-headers --port 
 | --debug | Print extra information for debugging | false |  |
 | --secure | Print extra information for debugging | false |  |
 
+## Usecases
+- Proxies cookies properly by removing the scoped domain
+- Adds proper CORs headers allowing full access from the browser
+- Supports POST requests and proxies them transparently
+- Read Only mode allows easy testing for backend APIs where accidental changes are prevented
+
 
 ## Example
 
@@ -60,6 +66,17 @@ proxies to
 GET https://reqres.in/api/clients/2
 GET https://reqres.in/api/clients/4
 ```
+
+### URL mappings
+`--map` option can be used to select a url if multiple urls are given. This can be used in scenarios where
+multiple paths map to different urls.
+
+```bash
+$ backend-proxy --url http://url_1.com --url http://url_2.com --map "/users -> 0" --map "/posts -> 1"
+```
+
+In above example, `/users/25` will proxy to `http://url_1.com/users/25` where as `/posts/22` will proxy to `http://url_2.com/posts/22`
+Note that url that comes first gets precedence. Either the first mapping matched will be used, or fall back to first url given. The mapped number is an index, and starts from 0 not 1
 
 ## License
 
