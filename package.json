@@ -1,6 +1,6 @@
 {
   "name": "api-proxy-pro",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A command line utility that proxies a backend API",
   "main": "src/cli.js",
   "engines": {
