@@ -1,6 +1,6 @@
 {
-  "name": "backend-proxy",
-  "version": "0.0.13",
+  "name": "api-proxy",
+  "version": "0.0.1",
   "description": "A command line utility that proxies a backend API",
   "main": "src/cli.js",
   "engines": {
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/murcul/backend-proxy.git"
+    "url": "git+https://github.com/jprothwell/backend-proxy.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/murcul/backend-proxy/issues"
+    "url": "https://github.com/jprothwell/backend-proxy/issues"
   },
-  "homepage": "https://github.com/murcul/backend-proxy#readme",
+  "homepage": "https://github.com/jprothwell/backend-proxy#readme",
   "dependencies": {
     "commander": "^2.11.0"
   },

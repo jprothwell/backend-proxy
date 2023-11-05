@@ -32,7 +32,7 @@ module.exports = function createHandler({
     // filter out unwanted headers
     const headers = Object.keys(req.headers).reduce((obj, key) => {
       if (
-        /(x-|host|if-|origin|access-|accept|connection|referer|user-)/.exec(key)
+        /(host|if-|origin|access-|accept|connection|referer|user-)/.exec(key)
       ) {
         return obj
       }
