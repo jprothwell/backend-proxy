@@ -1,6 +1,6 @@
 {
   "name": "api-proxy-pro",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A command line utility that proxies a backend API",
   "main": "src/cli.js",
   "engines": {
@@ -31,6 +31,6 @@
     "supertest": "^3.0.0"
   },
   "bin": {
-    "api-proxy-pro": "./src/cli.js"
+    "api-proxy": "./src/cli.js"
   }
 }
